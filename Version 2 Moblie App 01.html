@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PolyU School of Design — Competition & Subsidy Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    html {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: #EFEFEF;
+      color: #1F2937;
+      margin: 0;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .focus-ring:focus-visible {
+      outline: 2px solid #9E1B32;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Mobile-First App Shell -->
+  <div id="app-shell" class="max-w-[430px] mx-auto min-h-screen bg-[#F9F9F9] relative shadow-xl overflow-x-hidden pb-[88px]">
+
+    <!-- PERSISTENT TOP STICKY HEADER -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB] px-4 pt-3 pb-3">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <!-- Hamburger Menu -->
+        <button type="button" id="btn-open-drawer" aria-label="Open navigation menu" class="p-2 -ml-2 rounded-[12px] text-[#9E1B32] hover:bg-[#FCEEEF] focus-ring transition-colors">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <!-- Right Controls: Language Pill + EV Avatar -->
+        <div class="flex items-center gap-3">
+          <button type="button" id="btn-lang-toggle" aria-label="Toggle language" class="flex items-center border border-[#E5E7EB] rounded-[12px] px-3 py-1.5 text-[16px] font-semibold bg-white hover:bg-[#F9F9F9] focus-ring transition-colors">
+            <span id="lang-eng" class="text-[#9E1B32]">ENG</span>
+            <span class="mx-2 text-[#D1D5DB]">|</span>
+            <span id="lang-zh" class="text-[#6B7280]">繁中</span>
+          </button>
+
+          <button type="button" data-nav="screen-user-workspace" aria-label="Go to User Workspace" class="relative w-10 h-10 rounded-full border-2 border-[#9E1B32] bg-white text-[#9E1B32] font-bold text-[16px] flex items-center justify-center hover:bg-[#FCEEEF] focus-ring transition-colors">
+            <span id="header-avatar-initials">EV</span>
+            <span id="header-notif-dot" class="hidden absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-[#9E1B32] rounded-full ring-2 ring-white" aria-label="Action required"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Input Row -->
+      <div class="relative">
+        <label for="global-search" class="sr-only">Search competitions, dossiers</label>
+        <span class="absolute inset-y-0 left-3.5 flex items-center text-[#9E1B32] pointer-events-none">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+          </svg>
+        </span>
+        <input id="global-search" type="search" placeholder="Search competitions, dossiers..." class="w-full bg-[#F5F3F3] border border-transparent focus:border-[#9E1B32] focus:bg-white rounded-full pl-10 pr-4 py-2 text-[16px] text-[#1F2937] placeholder-[#6B7280] focus-ring transition-colors" />
+      </div>
+    </header>
+
+    <!-- SLIDE-OUT NAVIGATION DRAWER -->
+    <div id="nav-drawer-backdrop" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-[1px] transition-opacity">
+      <nav aria-label="Quick navigation" class="w-[300px] max-w-[85vw] h-full bg-white shadow-2xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-[#E5E7EB]">
+            <div>
+              <p class="text-[14px] font-bold uppercase tracking-wider text-[#9E1B32]">PolyU Design</p>
+              <h2 class="text-[20px] font-bold text-[#1F2937]">Portal Menu</h2>
+            </div>
+            <button type="button" id="btn-close-drawer" aria-label="Close navigation menu" class="p-2 rounded-[12px] text-[#6B7280] hover:bg-[#F3F4F6] focus-ring">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <ul class="mt-4 space-y-2 text-[16px] font-medium">
+            <li><button type="button" data-nav="screen-home" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">Home Dashboard</button></li>
+            <li><button type="button" data-nav="screen-competition" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">Competition Matches</button></li>
+            <li><button type="button" data-nav="screen-contest-detail" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">Red Dot Award Brief</button></li>
+            <li><button type="button" data-nav="screen-entry-step1" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">New Competition Entry</button></li>
+            <li><button type="button" data-nav="screen-reimburse-step1" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">Subsidy Reimbursement</button></li>
+            <li><button type="button" data-nav="screen-user-workspace" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">My Applications & Tracking</button></li>
+            <li><button type="button" data-nav="screen-user-profile" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">Academic Dossier (92%)</button></li>
+            <li><button type="button" data-nav="screen-favorites" class="drawer-link w-full text-left px-3 py-2.5 rounded-[12px] hover:bg-[#FCEEEF] hover:text-[#9E1B32] focus-ring">Favorites & Reminders</button></li>
+          </ul>
+        </div>
+        <div class="pt-4 border-t border-[#E5E7EB] text-[14px] text-[#6B7280]">
+          <p class="font-semibold text-[#1F2937]">Elena Vance</p>
+          <p>BA (Hons) Product Design • GPA 3.94</p>
+        </div>
+      </nav>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content" class="px-4 pt-4">
+
+      <!-- ========================================================= -->
+      <!-- 1. SCREEN HOME (DEFAULT VISIBLE)                          -->
+      <!-- ========================================================= -->
+      <section id="screen-home" class="space-y-4">
+        <!-- Priority Call Crimson Banner -->
+        <div class="relative overflow-hidden rounded-[16px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] p-6 text-white shadow-md">
+          <div class="pointer-events-none select-none absolute -bottom-4 right-3 text-[84px] font-extrabold leading-none text-white/10 tracking-tighter">2026</div>
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <span class="inline-flex items-center gap-1.5 bg-white text-[#9E1B32] text-[14px] font-bold px-3 py-1 rounded-full">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              PRIORITY CALL
+            </span>
+            <span class="text-[16px] font-semibold text-white/95">18 Days Left</span>
+          </div>
+          <h1 class="text-[25px] font-bold leading-tight mb-2">Red Dot Award: Design Concept 2026</h1>
+          <p class="text-[16px] text-white/90 mb-2">Official PolyU SD sponsored delegation. Full...</p>
+          <p class="text-[14px] text-white/80 mb-4 pb-3 border-b border-white/20">Category: XR Hardware</p>
+          <div class="flex justify-end">
+            <button type="button" data-nav="screen-contest-detail" class="bg-white text-[#9E1B32] hover:bg-[#FCEEEF] font-semibold text-[16px] px-4 py-2.5 rounded-[12px] shadow-sm focus-ring transition-colors">
+              View Contest Brief &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Carousel Dots -->
+        <div class="flex justify-center gap-2 py-1" aria-hidden="true">
+          <span class="w-6 h-1.5 rounded-full bg-[#9E1B32]"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D1D5DB]"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D1D5DB]"></span>
+        </div>
+
+        <!-- Ready for New Submission Card -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+          <div class="flex justify-end mb-1">
+            <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-0.5 rounded-full">Eligible</span>
+          </div>
+          <h2 class="text-[20px] font-bold text-[#1F2937] mb-2">Ready for New Submission?</h2>
+          <p class="text-[16px] text-[#4B5563] mb-4">Fast-track verification using your PolyU SSO credentials.</p>
+          <div class="flex justify-end mb-4">
+            <button type="button" data-nav="screen-reimburse-step1" class="bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] px-5 py-2.5 rounded-[12px] focus-ring transition-colors">
+              Sign Up / Apply
+            </button>
+          </div>
+          <div class="flex items-center justify-between text-[16px] mb-2">
+            <span class="text-[#4B5563]">Annual Grant Quota: HK$5,250</span>
+            <span class="font-semibold text-[#1F2937]">65% used</span>
+          </div>
+          <div class="w-full h-2 bg-[#F3F4F6] rounded-full overflow-hidden">
+            <div class="h-full bg-[#9E1B32] rounded-full" style="width: 65%"></div>
+          </div>
+        </div>
+
+        <!-- Latest Match Tips & Advice -->
+        <div class="pt-2">
+          <h2 class="text-[25px] font-bold text-[#1F2937] leading-tight">Latest Match Tips &amp; Advice</h2>
+          <p class="text-[16px] text-[#4B5563] mb-4">AI portfolio mapping based on your capstone repository</p>
+
+          <div class="space-y-4">
+            <!-- Match Card 1 -->
+            <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h3 class="text-[20px] font-bold text-[#1F2937] leading-snug">NeuroHaptic VR Pavilion</h3>
+                <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">98% matched</span>
+              </div>
+              <p class="text-[16px] text-[#4B5563] mb-3">Matches: Red Dot XR &amp; Medical Ergonomics</p>
+              <div class="bg-[#F5F5F5] rounded-[12px] p-3 mb-4 flex items-start gap-2.5">
+                <span class="text-[#9E1B32] mt-0.5 shrink-0">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z"/></svg>
+                </span>
+                <p class="text-[16px] text-[#374151]">Faculty Mentor Tip: Prof. K. Cheng highly advises submitting under category 14.02 Interaction Interface to boost award probability.</p>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-[14px] text-[#6B7280]">Updated 2h ago</span>
+                <button type="button" data-nav="screen-entry-step1" class="text-[#9E1B32] hover:text-[#7D1427] font-semibold text-[16px] focus-ring rounded px-1">
+                  Apply with Capstone &rsaquo;
+                </button>
+              </div>
+            </article>
+
+            <!-- Match Card 2 -->
+            <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <h3 class="text-[20px] font-bold text-[#1F2937] leading-snug">BioLoop Circular Packaging</h3>
+                <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">91% matched</span>
+              </div>
+              <p class="text-[16px] text-[#4B5563] mb-3">Matches: iF Student Award 2026 (Zero Waste)</p>
+              <div class="bg-[#F5F5F5] rounded-[12px] p-3 mb-4 flex items-start gap-2.5">
+                <span class="text-[#9E1B32] mt-0.5 shrink-0">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z"/></svg>
+                </span>
+                <p class="text-[16px] text-[#374151]">Reimbursement status: 100% entry fee waiver quota reserved by School of Design Dean's Office.</p>
+              </div>
+              <div class="flex items-center justify-between pt-1">
+                <span class="text-[14px] text-[#6B7280]">Updated Yesterday</span>
+                <button type="button" data-nav="screen-entry-step1" class="text-[#9E1B32] hover:text-[#7D1427] font-semibold text-[16px] focus-ring rounded px-1">
+                  Apply with Capstone &rsaquo;
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 2. SCREEN COMPETITION MATCH RECOMMENDATIONS               -->
+      <!-- ========================================================= -->
+      <section id="screen-competition" class="hidden space-y-4">
+        <div>
+          <h1 class="text-[31px] font-bold text-[#1F2937] leading-tight mb-3">Competition Match Recommendations</h1>
+          <div class="inline-block bg-white border border-[#E5E7EB] rounded-[12px] px-4 py-1.5 text-[16px] mb-3">
+            Eligible Subsidy Pool: <span class="font-bold text-[#137333]">38 Contests</span>
+          </div>
+          <div>
+            <label for="comp-category-select" class="sr-only">Filter competition category</label>
+            <select id="comp-category-select" class="w-full bg-[#9E1B32] text-white font-semibold text-[16px] px-4 py-3 rounded-[12px] focus-ring cursor-pointer">
+              <option value="all">Product Design &amp; Industrial Design</option>
+              <option value="xr">XR Hardware &amp; Spatial Computing</option>
+              <option value="hci">Interaction Design &amp; HCI</option>
+              <option value="sust">Sustainable &amp; Circular Design</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Featured Top Academic Match -->
+        <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="bg-[#FCEEEF] text-[#9E1B32] text-[14px] font-semibold px-3 py-1 rounded-full">Top Academic Match</span>
+            <button type="button" class="btn-fav-star text-[#9E1B32] p-1 rounded-full focus-ring" data-fav-id="red-dot-2026" aria-label="Toggle favorite Red Dot Award">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            </button>
+          </div>
+          <h2 class="text-[20px] font-bold text-[#1F2937] mb-2">Red Dot Award: Design Concept 2026 (Singapore)</h2>
+          <p class="text-[16px] text-[#4B5563] mb-4">World-renowned platform for innovations, prototypes, and speculative industrial creations....</p>
+
+          <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-4 mb-4">
+            <p class="text-[14px] font-semibold uppercase tracking-wide text-[#6B7280]">FINAL SUBMISSION</p>
+            <p class="text-[20px] font-bold text-[#1F2937]">15 Mar 2026</p>
+            <p class="text-[16px] font-medium text-[#9E1B32]">18 Days Left</p>
+          </div>
+
+          <div class="space-y-2.5">
+            <button type="button" data-nav="screen-reimburse-step1" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3 rounded-[12px] focus-ring transition-colors">
+              Create Subsidy Application &rarr;
+            </button>
+            <button type="button" data-nav="screen-contest-detail" class="w-full bg-white border border-[#E5E7EB] hover:bg-[#F9F9F9] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] focus-ring transition-colors">
+              View Contest Brief &amp; Criteria
+            </button>
+          </div>
+        </article>
+
+        <!-- Curated Eligible Competitions -->
+        <div class="pt-2">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h2 class="text-[20px] font-bold text-[#1F2937]">Curated Eligible Competitions</h2>
+            <select id="comp-sort-select" aria-label="Sort competitions" class="bg-white border border-[#E5E7EB] rounded-[12px] px-3 py-1.5 text-[16px] text-[#1F2937] focus-ring">
+              <option value="high">High to Low</option>
+              <option value="soon">Deadline Soonest</option>
+            </select>
+          </div>
+
+          <div class="space-y-4">
+            <!-- iF Design -->
+            <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <div class="flex items-start gap-3">
+                  <div class="w-11 h-11 rounded-[12px] bg-[#FCEEEF] text-[#9E1B32] font-bold text-[16px] flex items-center justify-center shrink-0">iF</div>
+                  <div>
+                    <h3 class="text-[20px] font-bold text-[#1F2937] leading-snug">iF Design Student Award 2026</h3>
+                    <p class="text-[16px] text-[#4B5563]">Honoring design projects that solve problems ...</p>
+                  </div>
+                </div>
+                <button type="button" class="btn-fav-star text-[#D1D5DB] hover:text-[#9E1B32] p-1 rounded-full focus-ring" data-fav-id="if-2026" aria-label="Toggle favorite iF Design">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </button>
+              </div>
+              <p class="text-[16px] text-[#4B5563] border-t border-[#E5E7EB] pt-3 mb-3">Deadline: 20 Apr 2026</p>
+              <button type="button" data-nav="screen-reimburse-step1" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring transition-colors">
+                Apply for Subsidy
+              </button>
+            </article>
+
+            <!-- D&AD -->
+            <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <div class="flex items-start gap-3">
+                  <div class="w-11 h-11 rounded-[12px] bg-[#FCEEEF] text-[#9E1B32] font-bold text-[16px] flex items-center justify-center shrink-0">DD</div>
+                  <div>
+                    <h3 class="text-[20px] font-bold text-[#1F2937] leading-snug">D&amp;AD New Blood Awards 2026</h3>
+                    <p class="text-[16px] text-[#4B5563]">Real briefs set by the world's leading commercial...</p>
+                  </div>
+                </div>
+                <button type="button" class="btn-fav-star text-[#D1D5DB] hover:text-[#9E1B32] p-1 rounded-full focus-ring" data-fav-id="dad-2026" aria-label="Toggle favorite D&AD">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </button>
+              </div>
+              <p class="text-[16px] text-[#4B5563] border-t border-[#E5E7EB] pt-3 mb-3">Deadline: 22 Mar 2026 (25 Days)</p>
+              <button type="button" data-nav="screen-reimburse-step1" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring transition-colors">
+                Apply for Subsidy
+              </button>
+            </article>
+          </div>
+
+          <button type="button" id="btn-load-more-comp" class="w-full mt-4 bg-white border border-[#E5E7EB] hover:bg-[#FCEEEF] text-[#9E1B32] font-semibold text-[16px] py-3 rounded-[12px] focus-ring transition-colors">
+            Load More Competitions (33 remaining) &darr;
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 3. SCREEN CONTEST DETAIL                                  -->
+      <!-- ========================================================= -->
+      <section id="screen-contest-detail" class="hidden space-y-4">
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="bg-[#FCEEEF] text-[#9E1B32] text-[14px] font-semibold px-3 py-1 rounded-full">Red Dot Singapore &amp; Germany</span>
+            <button type="button" data-nav="screen-competition" class="text-[16px] font-medium text-[#6B7280] hover:text-[#1F2937] focus-ring rounded px-2">&larr; Back</button>
+          </div>
+          <p class="text-[16px] text-[#6B7280] font-medium">SUB-2026-RD09</p>
+          <h1 class="text-[25px] font-bold text-[#1F2937] leading-tight">Red Dot Award: Design Concept 2026</h1>
+          <p class="text-[16px] text-[#4B5563] leading-relaxed">
+            Premier international competition for aesthetic industrial prototypes, speculative hardware, and visionary materials. Fully endorsed under the PolyU School of Design Student Capstone Subsidy Framework.
+          </p>
+
+          <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3.5 grid grid-cols-2 gap-3 text-[16px]">
+            <div class="flex items-center gap-2 text-[#374151]">
+              <svg class="w-5 h-5 text-[#9E1B32] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Singapore &amp; Essen</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#374151]">
+              <svg class="w-5 h-5 text-[#9E1B32] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span>Adjudication: Jun 2026</span>
+            </div>
+          </div>
+
+          <!-- Visual Banner Card -->
+          <div class="relative rounded-[16px] overflow-hidden bg-gradient-to-br from-[#1F2937] via-[#374151] to-[#111827] h-[200px] p-4 flex flex-col justify-between text-white">
+            <div class="flex justify-end">
+              <span class="text-[12px] font-bold tracking-widest uppercase border-l-2 border-white pl-2 opacity-90">AURORA<br/>RED DOT WINNER</span>
+            </div>
+            <div>
+              <span class="inline-block bg-[#9E1B32] text-white text-[14px] font-bold px-3 py-1 rounded-[8px] mb-2">HOST JURISDICTION</span>
+              <p class="text-[16px] font-medium leading-snug">Global Ranking Index: Position 01 in Industrial Concept Design</p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" id="btn-detail-fav" class="border border-[#E5E7EB] bg-white hover:bg-[#FCEEEF] text-[#1F2937] font-semibold text-[16px] py-2.5 px-3 rounded-[12px] focus-ring transition-colors">
+              Save to Favorites
+            </button>
+            <button type="button" id="btn-open-brief-modal" class="border border-[#E5E7EB] bg-white hover:bg-[#F9F9F9] text-[#1F2937] font-semibold text-[16px] py-2.5 px-3 rounded-[12px] focus-ring transition-colors">
+              Contest Brief PDF
+            </button>
+          </div>
+
+          <!-- Info Grid -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-[#FCEEEF] rounded-[12px] p-4">
+              <p class="text-[16px] text-[#4B5563] mb-1">Next Deadline</p>
+              <p class="text-[20px] font-bold text-[#1F2937]">15 Mar 2026</p>
+              <p class="text-[16px] font-medium text-[#9E1B32] mt-1">&bull; 18 Days left</p>
+            </div>
+            <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-4">
+              <p class="text-[16px] text-[#4B5563] mb-1">Participation</p>
+              <p class="text-[20px] font-bold text-[#1F2937]">Solo or Team (&le;4)</p>
+              <p class="text-[16px] text-[#6B7280] mt-1">PolyU BA</p>
+            </div>
+          </div>
+
+          <button type="button" class="w-full bg-white border border-[#E5E7EB] text-[#9E1B32] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#FCEEEF] focus-ring transition-colors">
+            Load More Competitions (2 remaining) &darr;
+          </button>
+        </div>
+
+        <button type="button" data-nav="screen-entry-step1" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] shadow-md focus-ring transition-colors">
+          Apply Competition &rsaquo;
+        </button>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 4. COMPETITION ENTRY WIZARD (STEPS 1, 2, 3)               -->
+      <!-- ========================================================= -->
+
+      <!-- ENTRY STEP 1 -->
+      <section id="screen-entry-step1" class="hidden space-y-4">
+        <h1 class="text-[25px] font-bold text-[#1F2937] leading-tight">Red Dot Award: Design Concept 2026</h1>
+
+        <!-- Stepper -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 grid grid-cols-3 text-center">
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center mb-1">1</span>
+            <span class="text-[14px] font-semibold text-[#9E1B32]">Project</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#E5E7EB] text-[#6B7280] font-bold flex items-center justify-center mb-1">2</span>
+            <span class="text-[14px] font-medium text-[#6B7280]">Endorsement</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#E5E7EB] text-[#6B7280] font-bold flex items-center justify-center mb-1">3</span>
+            <span class="text-[14px] font-medium text-[#6B7280]">Dossier</span>
+          </div>
+        </div>
+
+        <!-- Step 1 Card -->
+        <div class="bg-white border-2 border-[#9E1B32] rounded-[16px] p-5 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+            <h2 class="text-[20px] font-bold text-[#1F2937]">STEP 01: Project Review</h2>
+            <button type="button" id="btn-switch-project" class="text-[#9E1B32] font-semibold text-[16px] hover:underline focus-ring rounded px-1">
+              &#8644; Switch Project
+            </button>
+          </div>
+
+          <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3.5 flex items-center gap-3">
+            <div class="w-16 h-16 rounded-[12px] bg-[#1F2937] text-white flex items-center justify-center font-bold text-[14px] shrink-0 text-center leading-tight p-1">VR<br/>PAVILION</div>
+            <div class="min-w-0">
+              <p id="entry-project-title" class="text-[18px] font-bold text-[#1F2937] truncate">NeuroHaptic VR Pavilion</p>
+              <p class="text-[16px] text-[#4B5563] truncate">Spatial speculative architecture...</p>
+              <button type="button" class="text-[#9E1B32] text-[14px] font-semibold hover:underline focus-ring">View Original Capstone &#8599;</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="entry-details-input" class="text-[16px] font-bold text-[#1F2937]">Project Details</label>
+              <span id="entry-details-count" class="text-[14px] text-[#4B5563]">342 / 500 characters</span>
+            </div>
+            <textarea id="entry-details-input" rows="4" maxlength="500" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] text-[#1F2937] focus:bg-white focus:border-[#9E1B32] focus-ring">NeuroHaptic VR Pavilion investigates sensory biofeedback integration inside immersive spatial computing frameworks. Developed within an advanced physical-computing workshop, the system leverages multi-chamber pneumatic haptic skins synchronised with spatial audio cues.</textarea>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="entry-concept-input" class="text-[16px] font-bold text-[#1F2937]">Design Concept</label>
+              <span id="entry-concept-count" class="text-[14px] text-[#4B5563]">1,420 / 2,000 characters</span>
+            </div>
+            <textarea id="entry-concept-input" rows="4" maxlength="2000" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] text-[#1F2937] focus:bg-white focus:border-[#9E1B32] focus-ring">Current commercial spatial computing headsets create cognitive dissonance by decoupling visual fidelity from tactile somatic feedback. Users perceive hyper-realistic environments while experiencing total physical numbness in limb actuation. Our pavilion bridges this sensory gap.</textarea>
+          </div>
+
+          <div class="bg-[#E6F4EA] text-[#137333] rounded-[12px] px-4 py-3 text-[16px] font-medium flex items-center gap-2">
+            <span>&#10003;</span>
+            <span>Capstone Verified for Red Dot Submission</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" data-nav="screen-contest-detail" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">&lsaquo; Back</button>
+          <button type="button" id="btn-entry-save-draft-1" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save Draft</button>
+        </div>
+        <button type="button" data-nav="screen-entry-step2" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] focus-ring transition-colors">
+          Save &amp; Next &rsaquo;
+        </button>
+      </section>
+
+      <!-- ENTRY STEP 2 -->
+      <section id="screen-entry-step2" class="hidden space-y-4">
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 grid grid-cols-3 text-center">
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#137333] text-white font-bold flex items-center justify-center mb-1">&#10003;</span>
+            <span class="text-[14px] font-semibold text-[#137333]">Project</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center mb-1">2</span>
+            <span class="text-[14px] font-semibold text-[#9E1B32]">Endorsement</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#E5E7EB] text-[#6B7280] font-bold flex items-center justify-center mb-1">3</span>
+            <span class="text-[14px] font-medium text-[#6B7280]">Dossier</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-5">
+          <h2 class="text-[20px] font-bold text-[#1F2937] pb-3 border-b border-[#E5E7EB]">STEP 02: Authorship &amp; Endorsement</h2>
+
+          <div>
+            <p class="text-[16px] font-bold text-[#1F2937] mb-3">Applicant Authorship Structure</p>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="cursor-pointer">
+                <input type="radio" name="entry-authorship" value="solo" checked class="sr-only peer" />
+                <div class="border-2 border-[#E5E7EB] peer-checked:border-[#9E1B32] peer-checked:bg-[#FCEEEF]/30 rounded-[12px] p-3.5 h-full flex flex-col justify-between">
+                  <p class="text-[16px] font-bold text-[#9E1B32]">Solo Author</p>
+                  <p class="text-[14px] text-[#4B5563]">Single registrant candidate</p>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="entry-authorship" value="team" class="sr-only peer" />
+                <div class="border-2 border-[#E5E7EB] peer-checked:border-[#9E1B32] peer-checked:bg-[#FCEEEF]/30 rounded-[12px] p-3.5 h-full flex flex-col justify-between">
+                  <p class="text-[16px] font-bold text-[#1F2937]">Team Submission</p>
+                  <p class="text-[14px] text-[#4B5563]">(Max 4 people)</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-[16px] font-bold text-[#1F2937]">Assigned Supervisor</p>
+              <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-0.5 rounded-full">Ready</span>
+            </div>
+            <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3.5 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="w-10 h-10 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center shrink-0">KL</span>
+                <div class="min-w-0">
+                  <p class="text-[16px] font-bold text-[#1F2937] truncate">Prof. Keith Lam</p>
+                  <p class="text-[14px] text-[#4B5563] truncate">Assoc. Professor, PolyU SD</p>
+                </div>
+              </div>
+              <button type="button" class="bg-[#9E1B32] text-white font-semibold text-[14px] px-3 py-1.5 rounded-[8px] focus-ring">Edit</button>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-[16px] font-bold text-[#1F2937] mb-2">Endorsement Agreement &amp; Ethics Declarations</p>
+            <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-4 space-y-3">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input id="entry-ethics-1" type="checkbox" checked class="mt-1 w-5 h-5 accent-[#9E1B32] rounded focus-ring" />
+                <span class="text-[16px] text-[#374151]">I certify that this submission represents original academic work conducted under the PolyU School of Design curriculum.</span>
+              </label>
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input id="entry-ethics-2" type="checkbox" checked class="mt-1 w-5 h-5 accent-[#9E1B32] rounded focus-ring" />
+                <span class="text-[16px] text-[#374151]">I acknowledge the Faculty Endorsement timeline (typically 1–2 business days).</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="bg-[#E6F4EA] text-[#137333] rounded-[12px] px-4 py-3 text-[16px] font-medium flex items-center gap-2">
+            <span>&#10003;</span>
+            <span>Pre-Endorsement clearance validated with Academic Registry</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" data-nav="screen-entry-step1" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">&lsaquo; Back to Step 1</button>
+          <button type="button" id="btn-entry-save-draft-2" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save Draft</button>
+        </div>
+        <button type="button" id="btn-entry-step2-next" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] focus-ring transition-colors">
+          Save &amp; Next &rsaquo;
+        </button>
+      </section>
+
+      <!-- ENTRY STEP 3 -->
+      <section id="screen-entry-step3" class="hidden space-y-4">
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 grid grid-cols-3 text-center">
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#137333] text-white font-bold flex items-center justify-center mb-1">&#10003;</span>
+            <span class="text-[14px] font-semibold text-[#137333]">Project</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#137333] text-white font-bold flex items-center justify-center mb-1">&#10003;</span>
+            <span class="text-[14px] font-semibold text-[#137333]">Endorsement</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center mb-1">3</span>
+            <span class="text-[14px] font-semibold text-[#9E1B32]">Dossier</span>
+          </div>
+        </div>
+
+        <div class="bg-white border-2 border-[#9E1B32] rounded-[16px] p-5 space-y-4">
+          <h2 class="text-[20px] font-bold text-[#1F2937]">STEP 03: Dossier Submission</h2>
+
+          <div class="bg-[#FCEEEF] rounded-[12px] p-4">
+            <p class="text-[16px] font-bold text-[#9E1B32] mb-1">&#128737; Strict Red Dot Blind Jury Rule Enforced</p>
+            <p class="text-[16px] text-[#4B5563]">Presentation boards, demonstration videos, and metadata MUST NOT contain student names, matriculation IDs, supervisor designations, or PolyU / School of Design logos. Non-compliant dossiers are immediately disqualified by Red Dot Essen.</p>
+          </div>
+
+          <div>
+            <p class="text-[16px] font-bold text-[#1F2937] mb-2">Presentation Boards</p>
+            <button type="button" id="btn-add-board" class="w-full border-2 border-dashed border-[#D1D5DB] hover:border-[#9E1B32] rounded-[16px] p-6 text-center transition-colors focus-ring">
+              <span class="block text-[24px] text-[#4B5563] mb-1">+</span>
+              <span class="block text-[16px] font-bold text-[#1F2937]">Add Board (Maximum 5)</span>
+              <span class="block text-[16px] text-[#6B7280]">Upload PDF / JPG</span>
+            </button>
+            <div id="entry-boards-list" class="mt-3 space-y-2"></div>
+          </div>
+
+          <div>
+            <p class="text-[16px] font-bold text-[#1F2937] mb-2">Multimedia &amp; Assets</p>
+            <div class="space-y-3">
+              <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3.5 flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="text-[16px] font-bold text-[#1F2937] truncate">NeuroHaptic_Demo_90s_1080p...</p>
+                  <p class="text-[14px] text-[#4B5563]">48.2 MB &bull; H.264 / 1080p &bull; Max 90s</p>
+                </div>
+                <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-1 rounded-full">&#10003; Passed</span>
+              </div>
+              <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3.5 flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <p class="text-[16px] font-bold text-[#1F2937] truncate">Pavilion_Manifold_Assembly_v3...</p>
+                  <p class="text-[14px] text-[#4B5563]">112 MB &bull; Physical 3D Assembly</p>
+                </div>
+                <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-1 rounded-full">&#10003; Passed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" data-nav="screen-entry-step2" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">&lsaquo; Back to Step 2</button>
+          <button type="button" id="btn-entry-save-draft-3" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save Draft</button>
+        </div>
+        <button type="button" id="btn-submit-entry" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] shadow-md focus-ring transition-colors">
+          Save &amp; Submit &rsaquo;
+        </button>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 5. SCREEN USER WORKSPACE (TRACKING & DUAL-TRACK ACTIONS)  -->
+      <!-- ========================================================= -->
+      <section id="screen-user-workspace" class="hidden space-y-4">
+        <!-- Top Profile Summary Card -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+          <div class="flex items-start justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-[12px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] text-white font-bold text-[20px] flex items-center justify-center shrink-0">EV</div>
+              <div>
+                <h1 class="text-[20px] font-bold text-[#1F2937]" id="workspace-user-name">Elena Vance</h1>
+                <p class="text-[16px] text-[#4B5563]">Product Design</p>
+              </div>
+            </div>
+            <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-1 rounded-full">Eligible</span>
+          </div>
+
+          <div class="bg-[#F9FAFB] rounded-[12px] p-3 grid grid-cols-3 text-center mb-4">
+            <div>
+              <p class="text-[14px] text-[#6B7280]">Status</p>
+              <p class="text-[16px] font-bold text-[#137333]">&#10003; Verified</p>
+            </div>
+            <div>
+              <p class="text-[14px] text-[#6B7280]">GPA</p>
+              <p class="text-[16px] font-bold text-[#1F2937]">3.94</p>
+            </div>
+            <div>
+              <p class="text-[14px] text-[#6B7280]">Endorse</p>
+              <p class="text-[16px] font-bold text-[#9E1B32]">5 Signed</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" data-nav="screen-user-edit" class="flex-1 bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring transition-colors">
+              Edit Dossier
+            </button>
+            <button type="button" data-nav="screen-user-profile" class="px-4 py-2.5 border border-[#E5E7EB] bg-white hover:bg-[#FCEEEF] text-[#9E1B32] font-semibold text-[16px] rounded-[12px] focus-ring transition-colors">
+              Overview (92%)
+            </button>
+          </div>
+        </div>
+
+        <!-- Workspace Insights -->
+        <div>
+          <p class="text-[14px] font-bold uppercase tracking-wider text-[#4B5563] mb-2">WORKSPACE INSIGHTS</p>
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[#9E1B32] font-bold text-[16px]">&#9734; Curated Match Recommendations</span>
+              <span class="bg-[#F3F4F6] text-[#374151] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">98% Affinity</span>
+            </div>
+            <p class="text-[16px] text-[#4B5563] mb-3">Latest registration details for international competitions in Hong Kong &amp; Europe.</p>
+            <div class="flex justify-end">
+              <button type="button" data-nav="screen-competition" class="text-[#9E1B32] font-semibold text-[16px] hover:underline focus-ring">Explore Matches &rsaquo;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Application Status & Tracking -->
+        <div class="pt-1">
+          <h2 class="text-[20px] font-bold text-[#1F2937] mb-3">Application Status &amp; Tracking</h2>
+
+          <!-- Filter Tabs -->
+          <div id="workspace-filter-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-3">
+            <button type="button" data-filter="all" class="ws-tab shrink-0 px-4 py-1.5 rounded-full text-[16px] font-semibold bg-[#9E1B32] text-white focus-ring">All (4)</button>
+            <button type="button" data-filter="in-review" class="ws-tab shrink-0 px-4 py-1.5 rounded-full text-[16px] font-medium bg-white border border-[#E5E7EB] text-[#4B5563] focus-ring">In Review (1)</button>
+            <button type="button" data-filter="approved" class="ws-tab shrink-0 px-4 py-1.5 rounded-full text-[16px] font-medium bg-white border border-[#E5E7EB] text-[#4B5563] focus-ring">Endorsed (1)</button>
+            <button type="button" data-filter="action" class="ws-tab shrink-0 px-4 py-1.5 rounded-full text-[16px] font-medium bg-white border border-[#E5E7EB] text-[#4B5563] focus-ring">Action (2)</button>
+          </div>
+
+          <button type="button" data-nav="screen-entry-step1" class="w-full mb-4 bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3 rounded-[12px] focus-ring transition-colors">
+            Create New Application +
+          </button>
+
+          <!-- Dynamic Applications Container -->
+          <div id="workspace-apps-list" class="space-y-4"></div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 6. REIMBURSEMENT WIZARD (STEPS 1, 2, 3)                   -->
+      <!-- ========================================================= -->
+
+      <!-- REIMBURSE STEP 1 -->
+      <section id="screen-reimburse-step1" class="hidden space-y-4">
+        <h1 class="text-[25px] font-bold text-[#1F2937] leading-tight">Student Reimbursement Application</h1>
+        <span class="inline-block bg-white border border-[#E5E7EB] rounded-[12px] px-3.5 py-1.5 text-[16px] text-[#374151]">Review Turnaround: 5–7 Working Days</span>
+
+        <!-- Quota Banner -->
+        <div class="rounded-[16px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] p-5 text-white shadow-md">
+          <div class="flex items-center justify-between text-[16px] font-bold mb-2">
+            <span>ANNUAL GRANT QUOTA</span>
+            <span>65% Used</span>
+          </div>
+          <div class="w-full h-2 bg-white/25 rounded-full overflow-hidden mb-2">
+            <div class="h-full bg-white rounded-full" style="width: 65%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[16px]">
+            <span class="text-white/90">Remaining Subsidy</span>
+            <span class="font-bold">$5,250 / $15,000 HKD</span>
+          </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 grid grid-cols-3 text-center">
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center mb-1">1</span>
+            <span class="text-[14px] font-semibold text-[#9E1B32]">Target Event</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#E5E7EB] text-[#6B7280] font-bold flex items-center justify-center mb-1">2</span>
+            <span class="text-[14px] font-medium text-[#6B7280]">Itemized Breakdown</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#E5E7EB] text-[#6B7280] font-bold flex items-center justify-center mb-1">3</span>
+            <span class="text-[14px] font-medium text-[#6B7280]">Disbursement</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[20px] font-bold text-[#1F2937]">Target Event</h2>
+            <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-0.5 rounded-full">&#10003; Pre-Approved</span>
+          </div>
+
+          <div>
+            <label for="reimburse-supervisor" class="block text-[16px] font-bold text-[#1F2937] mb-1.5">Designated Faculty Supervisor <span class="text-[#9E1B32]">*</span></label>
+            <select id="reimburse-supervisor" class="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] text-[#1F2937] focus-ring">
+              <option>Prof. Keith Lam — Dept. of Interactive Media</option>
+              <option>Prof. Kin-wai Lee — School of Design</option>
+              <option>Dr. Marianne Chen — HCI Lab</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="reimburse-competition" class="block text-[16px] font-bold text-[#1F2937] mb-1.5">Verified Competition Entry <span class="text-[#9E1B32]">*</span></label>
+            <select id="reimburse-competition" class="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] text-[#1F2937] focus-ring">
+              <option>Red Dot Award: Design Concept 2026 (Singapore)</option>
+              <option>CHI Conference on Human Factors in Computing Systems</option>
+              <option>iF Design Student Award 2026</option>
+            </select>
+            <p class="text-[14px] text-[#137333] mt-1.5">&#10003; Pre-cleared through School of Design Global Competitions Registry.</p>
+          </div>
+
+          <div>
+            <label for="reimburse-title" class="block text-[16px] font-bold text-[#1F2937] mb-1.5">Nominated Project Title <span class="text-[#9E1B32]">*</span></label>
+            <input id="reimburse-title" type="text" value="NeuroHaptic VR Pavilion" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] text-[#1F2937] focus:bg-white focus:border-[#9E1B32] focus-ring" />
+            <p class="text-[14px] text-[#6B7280] mt-1">Matched to Capstone Project Studio #IM4012</p>
+          </div>
+
+          <div>
+            <p class="text-[16px] font-bold text-[#1F2937] mb-2">Participation Classification <span class="text-[#9E1B32]">*</span></p>
+            <div class="space-y-2.5">
+              <label class="block cursor-pointer">
+                <input type="radio" name="reimburse-part" value="individual" class="sr-only peer" />
+                <div class="border-2 border-[#E5E7EB] peer-checked:border-[#9E1B32] peer-checked:bg-[#FCEEEF]/30 rounded-[12px] p-3.5">
+                  <p class="text-[16px] font-bold text-[#1F2937]">Individual</p>
+                  <p class="text-[16px] text-[#4B5563]">Solo Submission</p>
+                </div>
+              </label>
+              <label class="block cursor-pointer">
+                <input type="radio" name="reimburse-part" value="team" checked class="sr-only peer" />
+                <div class="border-2 border-[#E5E7EB] peer-checked:border-[#9E1B32] peer-checked:bg-[#FCEEEF]/30 rounded-[12px] p-3.5">
+                  <p class="text-[16px] font-bold text-[#9E1B32]">Team Lead (2–4 Pax)</p>
+                  <p class="text-[16px] text-[#9E1B32]">Sarah Chen + 1 Peer</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <label class="flex items-center gap-3 cursor-pointer pt-1">
+            <input type="checkbox" checked class="w-5 h-5 accent-[#9E1B32] rounded focus-ring" />
+            <span class="text-[16px] font-semibold text-[#1F2937]">Ready for Faculty E-Sign</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" id="btn-reimburse-draft-1" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save as Draft</button>
+          <button type="button" data-nav="screen-user-workspace" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Cancel</button>
+        </div>
+        <button type="button" data-nav="screen-reimburse-step2" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] focus-ring transition-colors">
+          Save and Next &rarr;
+        </button>
+      </section>
+
+      <!-- REIMBURSE STEP 2 (STARTS EMPTY + 1,000 HKD CAP VALIDATION) -->
+      <section id="screen-reimburse-step2" class="hidden space-y-4">
+        <div class="rounded-[16px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] p-5 text-white shadow-md">
+          <div class="flex items-center justify-between text-[16px] font-bold mb-2">
+            <span>ANNUAL GRANT QUOTA</span>
+            <span>65% Used</span>
+          </div>
+          <div class="w-full h-2 bg-white/25 rounded-full overflow-hidden mb-2">
+            <div class="h-full bg-white rounded-full" style="width: 65%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[16px]">
+            <span class="text-white/90">Remaining Subsidy</span>
+            <span class="font-bold">$5,250 / $15,000 HKD</span>
+          </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 grid grid-cols-3 text-center">
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#137333] text-white font-bold flex items-center justify-center mb-1">&#10003;</span>
+            <span class="text-[14px] font-semibold text-[#137333]">Target Event</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center mb-1">2</span>
+            <span class="text-[14px] font-semibold text-[#9E1B32]">Itemized Breakdown</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#E5E7EB] text-[#6B7280] font-bold flex items-center justify-center mb-1">3</span>
+            <span class="text-[14px] font-medium text-[#6B7280]">Disbursement</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-[25px] font-bold text-[#1F2937] leading-tight">Itemized Expenditure Breakdown</h2>
+          <p class="text-[16px] text-[#4B5563]">Max HK$ 1,000.00 per single application. Convert non-HKD currencies using HKMA daily rates.</p>
+        </div>
+
+        <!-- Add Expense Button -->
+        <button type="button" id="btn-toggle-expense-form" class="w-full border-2 border-dashed border-[#9E1B32] bg-white hover:bg-[#FCEEEF] text-[#9E1B32] font-semibold text-[16px] py-3.5 rounded-[12px] focus-ring transition-colors">
+          + Add Expense Item
+        </button>
+
+        <!-- Inline Add Expense Form -->
+        <div id="expense-inline-form" class="hidden bg-white border border-[#E5E7EB] rounded-[16px] p-4 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h3 class="text-[18px] font-bold text-[#1F2937]">New Expense Item</h3>
+            <button type="button" id="btn-close-expense-form" class="text-[14px] text-[#6B7280] hover:text-[#1F2937] focus-ring">Cancel</button>
+          </div>
+          <!-- Quick-Fill Sample Chips -->
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="quick-expense-chip text-[14px] bg-[#FCEEEF] text-[#9E1B32] font-medium px-3 py-1 rounded-full hover:bg-[#F8D7DC] focus-ring" data-title="Registration Fee" data-cat="Entry Fee" data-amount="650">+ Registration Fee HK$ 650</button>
+            <button type="button" class="quick-expense-chip text-[14px] bg-[#FCEEEF] text-[#9E1B32] font-medium px-3 py-1 rounded-full hover:bg-[#F8D7DC] focus-ring" data-title="Prototyping Materials" data-cat="Production" data-amount="500">+ Prototyping Materials HK$ 500</button>
+          </div>
+          <div>
+            <label for="exp-title" class="block text-[16px] font-medium text-[#1F2937] mb-1">Item Title</label>
+            <input id="exp-title" type="text" placeholder="e.g. Early Bird Registration Fee" class="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus-ring" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="exp-cat" class="block text-[16px] font-medium text-[#1F2937] mb-1">Category</label>
+              <select id="exp-cat" class="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus-ring">
+                <option value="Entry Fee">Entry Fee</option>
+                <option value="Production">Production</option>
+                <option value="Logistics">Logistics</option>
+              </select>
+            </div>
+            <div>
+              <label for="exp-amount" class="block text-[16px] font-medium text-[#1F2937] mb-1">Amount (HK$)</label>
+              <input id="exp-amount" type="number" min="1" step="1" placeholder="500" class="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus-ring" />
+            </div>
+          </div>
+          <button type="button" id="btn-save-expense-item" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">
+            Add to Breakdown
+          </button>
+        </div>
+
+        <!-- Dynamic Expense Items List (Starts Empty) -->
+        <div id="expense-items-list" class="space-y-3"></div>
+
+        <!-- Total Requested Subsidy Card -->
+        <div id="subsidy-total-card" class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+          <div class="text-right mb-2">
+            <p class="text-[16px] text-[#4B5563]">Total Requested Subsidy</p>
+            <p id="subsidy-total-amount" class="text-[25px] font-bold text-[#1F2937]">HK$ 0</p>
+          </div>
+          <p id="subsidy-allowance-msg" class="text-[16px] text-[#137333] font-medium flex items-center justify-end gap-1.5">
+            <span>&#10003;</span>
+            <span>Within 100% of Allowable Category Allowance (Max HK$ 1,000.00)</span>
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" data-nav="screen-reimburse-step1" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">&lsaquo; Back to Step 1</button>
+          <button type="button" id="btn-reimburse-draft-2" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save Draft</button>
+        </div>
+        <button type="button" id="btn-reimburse-step2-next" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] focus-ring transition-colors">
+          Save &amp; Next &rsaquo;
+        </button>
+      </section>
+
+      <!-- REIMBURSE STEP 3 -->
+      <section id="screen-reimburse-step3" class="hidden space-y-4">
+        <div class="rounded-[16px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] p-5 text-white shadow-md">
+          <div class="flex items-center justify-between text-[16px] font-bold mb-2">
+            <span>ANNUAL GRANT QUOTA</span>
+            <span>65% Used</span>
+          </div>
+          <div class="w-full h-2 bg-white/25 rounded-full overflow-hidden mb-2">
+            <div class="h-full bg-white rounded-full" style="width: 65%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[16px]">
+            <span class="text-white/90">Remaining Subsidy</span>
+            <span class="font-bold">$5,250 / $15,000 HKD</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 grid grid-cols-3 text-center">
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#137333] text-white font-bold flex items-center justify-center mb-1">&#10003;</span>
+            <span class="text-[14px] font-semibold text-[#137333]">Target Event</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#137333] text-white font-bold flex items-center justify-center mb-1">&#10003;</span>
+            <span class="text-[14px] font-semibold text-[#137333]">Itemized Breakdown</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <span class="w-8 h-8 rounded-full bg-[#9E1B32] text-white font-bold flex items-center justify-center mb-1">3</span>
+            <span class="text-[14px] font-semibold text-[#9E1B32]">Disbursement</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-[25px] font-bold text-[#1F2937] leading-tight">Disbursement Routing &amp; Bank Account</h2>
+          <p class="text-[16px] text-[#4B5563]">Linked to your PolyU Academic Registry Auto-Pay Profile.</p>
+        </div>
+
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-4">
+          <span class="inline-block bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-1 rounded-full">&#10003; Auto-Pay Verified</span>
+
+          <div class="bg-[#F9FAFB] rounded-[12px] p-4 space-y-3">
+            <label for="bank-select" class="block text-[16px] font-bold text-[#1F2937]">Designated Payout Bank</label>
+            <select id="bank-select" class="w-full bg-white border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] font-semibold text-[#1F2937] focus-ring">
+              <option value="HSBC">HSBC (Bank Code: 004)</option>
+              <option value="BEA">Bank of East Asia (Bank Code: 015)</option>
+              <option value="BOCHK">Bank of China HK (Bank Code: 012)</option>
+            </select>
+
+            <div>
+              <p class="text-[16px] font-bold text-[#1F2937] mb-1">Account Holder &amp; Number</p>
+              <div class="bg-white border border-[#E5E7EB] rounded-[12px] p-3 text-[16px] font-mono text-[#1F2937]">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 8291</div>
+              <p class="text-[14px] text-[#4B5563] mt-1">Recipient: CHEN XIAOLIN SARAH</p>
+            </div>
+          </div>
+
+          <label class="flex items-start gap-3 bg-[#F9FAFB] rounded-[12px] p-4 cursor-pointer">
+            <input id="reimburse-certify-chk" type="checkbox" checked class="mt-1 w-5 h-5 accent-[#9E1B32] rounded focus-ring" />
+            <span class="text-[16px] text-[#374151]">
+              I hereby certify that all particulars and expenses declared above have been incurred exclusively for the participation in the <strong>Red Dot Award: Design Concept 2026</strong> and conform strictly with PolyU Design Subsidy Regulations.
+            </span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button" data-nav="screen-reimburse-step2" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">&lsaquo; Back to Step 2</button>
+          <button type="button" id="btn-reimburse-draft-3" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save Draft</button>
+        </div>
+        <button type="button" id="btn-submit-reimburse" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] shadow-md focus-ring transition-colors">
+          Save &amp; Submit &rsaquo;
+        </button>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 7. SCREEN POST-APPROVAL RECEIPT UPLOAD                    -->
+      <!-- ========================================================= -->
+      <section id="screen-receipt-upload" class="hidden space-y-4">
+        <div class="rounded-[16px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] p-5 text-white shadow-md">
+          <div class="flex items-center justify-between text-[16px] font-bold mb-2">
+            <span>ANNUAL GRANT QUOTA</span>
+            <span>65% Used</span>
+          </div>
+          <div class="w-full h-2 bg-white/25 rounded-full overflow-hidden mb-2">
+            <div class="h-full bg-white rounded-full" style="width: 65%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[16px]">
+            <span class="text-white/90">Remaining Subsidy</span>
+            <span class="font-bold">$5,250 / $15,000 HKD</span>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="text-[25px] font-bold text-[#1F2937] leading-tight">Supporting Verification Documents &amp; Deliverables</h1>
+          <p class="text-[16px] text-[#4B5563]">Strict PDF &bull; Max 25MB</p>
+        </div>
+
+        <!-- Document Cards -->
+        <div class="space-y-3">
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 shadow-sm">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h2 class="text-[18px] font-bold text-[#1F2937]">Design Boards / Project Deck</h2>
+                <p class="text-[16px] text-[#4B5563]">neurohaptic_deck_vfinal.pdf</p>
+                <p class="text-[14px] text-[#6B7280]">18.4 MB &bull; High Res</p>
+              </div>
+              <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">&#10003; Valid</span>
+            </div>
+            <div class="flex justify-end gap-3 pt-2 border-t border-[#E5E7EB]">
+              <button type="button" class="btn-inspect-doc bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#1F2937] font-semibold text-[14px] px-4 py-1.5 rounded-[8px] focus-ring" data-doc="neurohaptic_deck_vfinal.pdf">Inspect</button>
+              <button type="button" class="btn-replace-doc text-[#9E1B32] font-semibold text-[14px] px-2 py-1.5 focus-ring">Replace</button>
+            </div>
+          </div>
+
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 shadow-sm">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h2 class="text-[18px] font-bold text-[#1F2937]">Official Bank Proof / Statement</h2>
+                <p class="text-[16px] text-[#4B5563]">bank_statement_mit_stmt.pdf</p>
+                <p class="text-[14px] text-[#6B7280]">1.2 MB &bull; HSBC Credit Slip</p>
+              </div>
+              <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">&#10003; Valid</span>
+            </div>
+            <div class="flex justify-end gap-3 pt-2 border-t border-[#E5E7EB]">
+              <button type="button" class="btn-inspect-doc bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#1F2937] font-semibold text-[14px] px-4 py-1.5 rounded-[8px] focus-ring" data-doc="bank_statement_mit_stmt.pdf">Inspect</button>
+              <button type="button" class="btn-replace-doc text-[#9E1B32] font-semibold text-[14px] px-2 py-1.5 focus-ring">Replace</button>
+            </div>
+          </div>
+
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 shadow-sm">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h2 class="text-[18px] font-bold text-[#1F2937]">Official Acceptance / Entry Proof</h2>
+                <p class="text-[16px] text-[#4B5563]">mit_entry_confirmation.pdf</p>
+                <p class="text-[14px] text-[#6B7280]">850 KB &bull; E-Signed Letter</p>
+              </div>
+              <span class="shrink-0 bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">&#10003; Valid</span>
+            </div>
+            <div class="flex justify-end gap-3 pt-2 border-t border-[#E5E7EB]">
+              <button type="button" class="btn-inspect-doc bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#1F2937] font-semibold text-[14px] px-4 py-1.5 rounded-[8px] focus-ring" data-doc="mit_entry_confirmation.pdf">Inspect</button>
+              <button type="button" class="btn-replace-doc text-[#9E1B32] font-semibold text-[14px] px-2 py-1.5 focus-ring">Replace</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drag & Drop Supplementary Receipts -->
+        <button type="button" id="btn-upload-supp-receipt" class="w-full border-2 border-dashed border-[#D9828D] bg-white hover:bg-[#FCEEEF]/40 rounded-[16px] p-6 text-center focus-ring transition-colors">
+          <span class="inline-flex w-10 h-10 rounded-full bg-[#FCEEEF] text-[#9E1B32] items-center justify-center mb-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          </span>
+          <span class="block text-[16px] font-bold text-[#1F2937]">Drag &amp; Drop Supplementary Expense Receipts</span>
+          <span class="block text-[14px] text-[#6B7280]">Supports PDF, PNG, JPG up to 10MB per file</span>
+          <span id="supp-receipt-status" class="hidden mt-2 inline-block bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-3 py-1 rounded-full">&#10003; receipt_invoice_2025.pdf attached</span>
+        </button>
+
+        <button type="button" id="btn-receipt-draft" class="w-full bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] hover:bg-[#F9F9F9] focus-ring">Save Draft</button>
+        <button type="button" id="btn-submit-receipts" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3.5 rounded-[12px] shadow-md focus-ring transition-colors">
+          Save &amp; Submit &rsaquo;
+        </button>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 8. SCREEN FAVORITES & REMINDERS                           -->
+      <!-- ========================================================= -->
+      <section id="screen-favorites" class="hidden space-y-4">
+        <h1 class="text-[25px] font-bold text-[#1F2937] leading-tight">Favourite Competitions &amp; Reminders</h1>
+        <button type="button" data-nav="screen-competition" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3 rounded-[12px] focus-ring transition-colors">
+          + Explore Matches
+        </button>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4">
+            <p class="text-[14px] font-semibold uppercase text-[#6B7280]">STARRED</p>
+            <p class="text-[25px] font-bold text-[#1F2937]">8 <span class="text-[16px] font-normal">Saved</span></p>
+            <p class="text-[14px] text-[#4B5563]">3 Active &bull; 5 Concluded</p>
+          </div>
+          <div class="bg-[#FCEEEF] border border-[#F3C6CD] rounded-[16px] p-4">
+            <p class="text-[14px] font-semibold uppercase text-[#9E1B32]">DEADLINES</p>
+            <p class="text-[25px] font-bold text-[#9E1B32]">2 <span class="text-[16px] font-normal">Imminent</span></p>
+            <p class="text-[14px] text-[#9E1B32]">Earliest cutoff: in 3 days</p>
+          </div>
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4">
+            <p class="text-[14px] font-semibold uppercase text-[#6B7280]">ARCHIVE</p>
+            <p class="text-[25px] font-bold text-[#1F2937]">12 <span class="text-[16px] font-normal">Matches</span></p>
+            <p class="text-[14px] text-[#4B5563]">Historical completed</p>
+          </div>
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-4">
+            <p class="text-[14px] font-semibold uppercase text-[#6B7280]">PREP WINDOW</p>
+            <p class="text-[25px] font-bold text-[#1F2937]">18 <span class="text-[16px] font-normal">Avg Days</span></p>
+            <p class="text-[14px] text-[#4B5563]">Healthy velocity</p>
+          </div>
+        </div>
+
+        <h2 class="text-[20px] font-bold text-[#9E1B32] pt-2">&bull; Urgent Reminders</h2>
+
+        <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-3 shadow-sm">
+          <div class="flex justify-end">
+            <span class="bg-[#FCEEEF] text-[#9E1B32] text-[14px] font-semibold px-3 py-0.5 rounded-full">&bull; 3 days remaining</span>
+          </div>
+          <h3 class="text-[20px] font-bold text-[#1F2937]">Red Dot Design Award: Concept 2026</h3>
+          <p class="text-[14px] text-[#6B7280]">Ref: #RD-0914</p>
+          <p class="text-[16px] text-[#4B5563]">Red Dot GmbH &bull; Track: Interaction Design &amp; Smart Wearables</p>
+          <p class="text-[16px] font-medium text-[#9E1B32]">Due: Mar 15, 2026</p>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" data-nav="screen-contest-detail" class="border border-[#E5E7EB] bg-white hover:bg-[#F9F9F9] text-[#1F2937] font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">View Dossier</button>
+            <button type="button" data-nav="screen-entry-step1" class="bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">Submit Final</button>
+          </div>
+        </article>
+
+        <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-3 shadow-sm">
+          <div class="flex justify-end">
+            <span class="bg-[#FCEEEF] text-[#9E1B32] text-[14px] font-semibold px-3 py-0.5 rounded-full">&bull; 13 days remaining</span>
+          </div>
+          <h3 class="text-[20px] font-bold text-[#1F2937]">CHI 2026 Student Design Competition</h3>
+          <p class="text-[14px] text-[#6B7280]">Ref: #BIO-4410</p>
+          <p class="text-[16px] text-[#4B5563]">ACM SIGCHI &bull; Track: Human–AI Interaction &amp; Ethics</p>
+          <div class="bg-[#E6F4EA] text-[#137333] rounded-[12px] px-3 py-2 text-[14px] font-semibold">&#10003; Faculty Review Complete (Dr. Marianne Chen)</div>
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <button type="button" data-nav="screen-user-workspace" class="border border-[#E5E7EB] bg-white hover:bg-[#F9F9F9] text-[#1F2937] font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">View Dossier</button>
+            <button type="button" data-nav="screen-reimburse-step1" class="bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">Apply Subsidy</button>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 9. SCREEN USER PROFILE (92% DOSSIER OVERVIEW)             -->
+      <!-- ========================================================= -->
+      <section id="screen-user-profile" class="hidden space-y-4">
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-[12px] bg-gradient-to-br from-[#9E1B32] to-[#7D1427] text-white font-bold text-[20px] flex items-center justify-center shrink-0">EV</div>
+              <div>
+                <h1 class="text-[20px] font-bold text-[#1F2937]" id="profile-user-name">Elena Vance</h1>
+                <p class="text-[16px] text-[#4B5563]">Product Design</p>
+              </div>
+            </div>
+            <button type="button" data-nav="screen-user-workspace" class="text-[#9E1B32] font-semibold text-[16px] hover:underline focus-ring">&larr; Workspace</button>
+          </div>
+          <button type="button" data-nav="screen-user-edit" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">
+            Edit Dossier
+          </button>
+        </div>
+
+        <!-- Completeness Banner -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-3">
+          <h2 class="text-[20px] font-bold text-[#1F2937]">Dossier Completeness: 92%</h2>
+          <p class="text-[16px] text-[#4B5563]">Sign 2026 AY FERPA release</p>
+          <div class="w-full h-2.5 bg-[#E5E7EB] rounded-full overflow-hidden">
+            <div class="h-full bg-[#137333] rounded-full" style="width: 92%"></div>
+          </div>
+          <button type="button" data-nav="screen-user-edit" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">
+            Complete
+          </button>
+        </div>
+
+        <!-- Personal Details -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-3">
+          <h2 class="text-[20px] font-bold text-[#1F2937]">Personal Details</h2>
+          <div class="grid grid-cols-2 gap-3 text-[16px]">
+            <div>
+              <p class="text-[14px] text-[#6B7280]">Full Name</p>
+              <p class="font-semibold text-[#1F2937]" id="prof-full-name">Elena Samantha Vance</p>
+            </div>
+            <div>
+              <p class="text-[14px] text-[#6B7280]">Preferred Name</p>
+              <p class="font-semibold text-[#1F2937]" id="prof-pref-name">Elena Vance (she/her)</p>
+            </div>
+            <div>
+              <p class="text-[14px] text-[#6B7280]">Institutional Email</p>
+              <p class="font-semibold text-[#1F2937] break-all">e.vance@connect.polyu.hk</p>
+            </div>
+            <div>
+              <p class="text-[14px] text-[#6B7280]">Phone Number</p>
+              <p class="font-semibold text-[#1F2937]" id="prof-phone">+852 (HK) 9123 4567</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Institutional Clearance -->
+        <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-3">
+          <h2 class="text-[20px] font-bold text-[#1F2937]">Institutional Clearance</h2>
+          <div class="bg-[#F9FAFB] rounded-[12px] p-3.5 flex items-start justify-between gap-2">
+            <div>
+              <p class="text-[16px] font-bold text-[#1F2937]">Office of the Registrar</p>
+              <p class="text-[16px] text-[#9E1B32]">Certified Transcript &amp; Class Rank (#2 of 144)</p>
+              <p class="text-[14px] text-[#6B7280]">Signed Oct 12, 2025 by M. Cheung</p>
+            </div>
+            <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">Clear</span>
+          </div>
+          <div class="bg-[#F9FAFB] rounded-[12px] p-3.5 flex items-start justify-between gap-2">
+            <div>
+              <p class="text-[16px] font-bold text-[#1F2937]">Dean of Design</p>
+              <p class="text-[16px] text-[#9E1B32]">Merit Competition Endorsement &amp; Travel Clearance</p>
+              <p class="text-[14px] text-[#6B7280]">Signed Nov 01, 2025 by Dean K.L. Wong</p>
+            </div>
+            <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">Clear</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 10. SCREEN USER EDIT (LEGAL PROFILE FORM)                 -->
+      <!-- ========================================================= -->
+      <section id="screen-user-edit" class="hidden space-y-4">
+        <form id="user-edit-form" class="space-y-4">
+          <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 space-y-4">
+            <h1 class="text-[20px] font-bold text-[#1F2937]">Basic Identity &amp; Legal Profile</h1>
+            <p class="text-[16px] text-[#4B5563]">Enter names strictly as they appear on official government IDs.</p>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="edit-first-name" class="block text-[16px] font-bold text-[#1F2937] mb-1">Legal First Name <span class="text-[#9E1B32]">*</span></label>
+                <input id="edit-first-name" type="text" required value="Elena" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus:bg-white focus:border-[#9E1B32] focus-ring" />
+              </div>
+              <div>
+                <label for="edit-last-name" class="block text-[16px] font-bold text-[#1F2937] mb-1">Legal Last Name <span class="text-[#9E1B32]">*</span></label>
+                <input id="edit-last-name" type="text" required value="Vance" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus:bg-white focus:border-[#9E1B32] focus-ring" />
+              </div>
+            </div>
+
+            <div>
+              <label for="edit-display-name" class="block text-[16px] font-bold text-[#1F2937] mb-1">Preferred Display Name</label>
+              <input id="edit-display-name" type="text" value="Elena Vance" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus:bg-white focus:border-[#9E1B32] focus-ring" />
+            </div>
+
+            <div>
+              <label for="edit-phone" class="block text-[16px] font-bold text-[#1F2937] mb-1">Mobile Phone Number <span class="text-[#9E1B32]">*</span></label>
+              <input id="edit-phone" type="tel" required value="9123 4567" class="w-full bg-[#F5F5F5] border border-[#E5E7EB] rounded-[12px] p-2.5 text-[16px] focus:bg-white focus:border-[#9E1B32] focus-ring" />
+            </div>
+
+            <div class="bg-[#E6F4EA] text-[#137333] rounded-[12px] p-3 text-[14px] font-medium">
+              &#10003; Verified via SAML/SSO federation key#PolyU-Design-88204
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-nav="screen-user-profile" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] focus-ring">Cancel</button>
+            <button type="button" id="btn-edit-save-draft" class="bg-white border border-[#E5E7EB] text-[#1F2937] font-semibold text-[16px] py-3 rounded-[12px] focus-ring">Save Draft</button>
+            <button type="submit" class="bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-3 rounded-[12px] focus-ring">Submit</button>
+          </div>
+        </form>
+      </section>
+
+    </main>
+
+    <!-- PERSISTENT BOTTOM TAB BAR -->
+    <nav id="bottom-tab-bar" aria-label="Primary bottom navigation" class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-[#E5E7EB] z-40 px-2 py-2 grid grid-cols-4">
+      <button type="button" data-nav="screen-home" class="tab-btn flex flex-col items-center justify-center py-1 text-[#9E1B32] focus-ring rounded-[8px]">
+        <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="text-[12px] font-semibold">Home</span>
+      </button>
+
+      <button type="button" data-nav="screen-competition" class="tab-btn flex flex-col items-center justify-center py-1 text-[#6B7280] focus-ring rounded-[8px]">
+        <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        <span class="text-[12px] font-medium">Competition</span>
+      </button>
+
+      <button type="button" data-nav="screen-user-workspace" class="tab-btn relative flex flex-col items-center justify-center py-1 text-[#6B7280] focus-ring rounded-[8px]">
+        <div class="relative">
+          <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          <span id="tab-notif-dot" class="hidden absolute -top-0.5 -right-1 w-2.5 h-2.5 bg-[#9E1B32] rounded-full ring-2 ring-white" aria-label="Action required"></span>
+        </div>
+        <span class="text-[12px] font-medium">User</span>
+      </button>
+
+      <button type="button" data-nav="screen-favorites" class="tab-btn flex flex-col items-center justify-center py-1 text-[#6B7280] focus-ring rounded-[8px]">
+        <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        <span class="text-[12px] font-medium">Favorites</span>
+      </button>
+    </nav>
+
+    <!-- GLOBAL MODAL (BRIEF PDF / INSPECT DOCUMENT) -->
+    <div id="global-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="bg-white rounded-[16px] max-w-[380px] w-full p-5 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+          <h3 id="modal-title" class="text-[20px] font-bold text-[#1F2937]">Document Preview</h3>
+          <button type="button" id="btn-close-modal" aria-label="Close modal" class="p-1 text-[#6B7280] hover:text-[#1F2937] focus-ring rounded">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div id="modal-body" class="text-[16px] text-[#4B5563] space-y-2"></div>
+        <button type="button" id="btn-modal-ok" class="w-full bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold text-[16px] py-2.5 rounded-[12px] focus-ring">Close Preview</button>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-container" class="pointer-events-none fixed top-20 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[390px] space-y-2" aria-live="polite"></div>
+
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- VANILLA JAVASCRIPT SPA ENGINE                             -->
+  <!-- ========================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Centralized Application State
+      const state = {
+        currentScreen: 'screen-home',
+        lang: 'ENG',
+        activeFilter: 'all',
+        activeTriggerAppId: null,
+        favorites: new Set(['red-dot-2026']),
+        boards: [],
+        expenseItems: [],
+        applications: [
+          {
+            id: 'app-ux-2026',
+            category: 'INTERACTION DESIGN',
+            title: 'Global UI/UX Design Hackathon 2026',
+            ref: 'Ref: #UX-8820 • Hong Kong',
+            endorsement: '✓ Prof. Kin-wai Lee',
+            deadline: 'Dec 15, 2025',
+            status: 'approved',
+            statusLabel: '• Approved',
+            actionType: 'view',
+            actionLabel: 'View Dossier'
+          },
+          {
+            id: 'app-chi-2025',
+            category: 'HCI & AI ETHICS',
+            title: 'CHI Conference on Human Factors in Computing Systems',
+            ref: 'Ref: #CHI-4410 • Honolulu, HI',
+            endorsement: 'Dr. Marianne Chen',
+            deadline: 'Nov 28, 2025',
+            status: 'action',
+            statusLabel: '• Action',
+            actionType: 'refund',
+            actionLabel: 'Apply refund'
+          },
+          {
+            id: 'app-mit-2025',
+            category: 'AI POLICY & GOVERNANCE',
+            title: 'MIT Tech Innovation Challenge 2025',
+            ref: 'Ref: #MIT-0914 • Boston, MA',
+            endorsement: 'Department Dean',
+            deadline: 'Nov 28, 2025',
+            status: 'action',
+            statusLabel: '• Action',
+            actionType: 'receipt',
+            actionLabel: 'Upload Receipt'
+          },
+          {
+            id: 'app-ideo-2026',
+            category: 'Product Design',
+            title: 'IDEO CoLab Design Fellowship 2026',
+            ref: 'Ref: #IDEO-0021 • San Francisco',
+            endorsement: '✓ Prof. Kin-wai Lee',
+            deadline: 'Jan 12, 2026',
+            status: 'in-review',
+            statusLabel: '• IN REVIEW',
+            actionType: 'view',
+            actionLabel: 'View Dossier'
+          }
+        ]
+      };
+
+      const TAB_BAR_SCREENS = new Set([
+        'screen-home',
+        'screen-competition',
+        'screen-user-workspace',
+        'screen-user-profile',
+        'screen-favorites'
+      ]);
+
+      // Toast Helper
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        const bgClass = type === 'error'
+          ? 'bg-[#9E1B32] text-white'
+          : type === 'info'
+          ? 'bg-[#1F2937] text-white'
+          : 'bg-[#137333] text-white';
+
+        toast.className = `${bgClass} px-4 py-3 rounded-[12px] shadow-lg text-[16px] font-medium flex items-center justify-between gap-2 transition-opacity duration-300`;
+        toast.textContent = message;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add('opacity-0');
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      // Navigation Engine
+      function navigateTo(screenId) {
+        const target = document.getElementById(screenId);
+        if (!target) return;
+
+        document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+        target.classList.remove('hidden');
+        state.currentScreen = screenId;
+
+        // Toggle Bottom Tab Bar Visibility
+        const tabBar = document.getElementById('bottom-tab-bar');
+        if (TAB_BAR_SCREENS.has(screenId)) {
+          tabBar.classList.remove('hidden');
+        } else {
+          tabBar.classList.add('hidden');
+        }
+
+        // Highlight Active Tab
+        document.querySelectorAll('#bottom-tab-bar .tab-btn').forEach(btn => {
+          const navTarget = btn.getAttribute('data-nav');
+          const isActive = navTarget === screenId || (screenId === 'screen-user-profile' && navTarget === 'screen-user-workspace');
+          btn.classList.toggle('text-[#9E1B32]', isActive);
+          btn.classList.toggle('text-[#6B7280]', !isActive);
+          const label = btn.querySelector('span:last-child');
+          if (label) {
+            label.classList.toggle('font-semibold', isActive);
+            label.classList.toggle('font-medium', !isActive);
+          }
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Update Red Notification Dots (EV Avatar + Bottom User Tab)
+      function updateNotificationDots() {
+        const hasAction = state.applications.some(app => app.status === 'action');
+        document.getElementById('header-notif-dot').classList.toggle('hidden', !hasAction);
+        document.getElementById('tab-notif-dot').classList.toggle('hidden', !hasAction);
+      }
+
+      // Render Workspace Applications & Filter Tabs
+      function renderWorkspace() {
+        const counts = {
+          all: state.applications.length,
+          'in-review': state.applications.filter(a => a.status === 'in-review').length,
+          approved: state.applications.filter(a => a.status === 'approved').length,
+          action: state.applications.filter(a => a.status === 'action').length
+        };
+
+        document.querySelectorAll('#workspace-filter-tabs .ws-tab').forEach(tab => {
+          const filter = tab.getAttribute('data-filter');
+          const labels = { all: 'All', 'in-review': 'In Review', approved: 'Endorsed', action: 'Action' };
+          tab.textContent = `${labels[filter]} (${counts[filter]})`;
+
+          const active = state.activeFilter === filter;
+          tab.className = active
+            ? 'ws-tab shrink-0 px-4 py-1.5 rounded-full text-[16px] font-semibold bg-[#9E1B32] text-white focus-ring'
+            : 'ws-tab shrink-0 px-4 py-1.5 rounded-full text-[16px] font-medium bg-white border border-[#E5E7EB] text-[#4B5563] focus-ring';
+        });
+
+        const list = document.getElementById('workspace-apps-list');
+        const filtered = state.activeFilter === 'all'
+          ? state.applications
+          : state.applications.filter(a => a.status === state.activeFilter);
+
+        list.innerHTML = filtered.map(app => {
+          let badgeClass = 'bg-[#F3F4F6] text-[#4B5563]';
+          if (app.status === 'approved') badgeClass = 'bg-[#E6F4EA] text-[#137333]';
+          if (app.status === 'action') badgeClass = 'bg-[#FCEEEF] text-[#9E1B32]';
+
+          const btnClass = app.status === 'action'
+            ? 'bg-[#9E1B32] hover:bg-[#7D1427] text-white font-semibold'
+            : 'bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#1F2937] font-semibold';
+
+          return `
+            <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-5 shadow-sm space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="bg-[#F3F4F6] text-[#4B5563] text-[12px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-[8px]">${app.category}</span>
+                <span class="${badgeClass} text-[14px] font-semibold px-3 py-0.5 rounded-full">${app.statusLabel}</span>
+              </div>
+              <div>
+                <h3 class="text-[20px] font-bold text-[#1F2937] leading-snug">${app.title}</h3>
+                <p class="text-[14px] text-[#6B7280] mt-1">${app.ref}</p>
+              </div>
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#E5E7EB] text-[14px]">
+                <div>
+                  <p class="text-[#6B7280]">Endorsement</p>
+                  <p class="font-semibold ${app.status === 'action' ? 'text-[#9E1B32]' : 'text-[#1F2937]'}">${app.endorsement}</p>
+                </div>
+                <div>
+                  <p class="text-[#6B7280]">Key Deadline</p>
+                  <p class="font-semibold ${app.status === 'action' ? 'text-[#9E1B32]' : 'text-[#1F2937]'}">${app.deadline}</p>
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <button type="button" data-app-id="${app.id}" data-action="${app.actionType}" class="ws-app-action ${btnClass} text-[16px] px-4 py-2 rounded-[10px] focus-ring transition-colors">
+                  ${app.actionLabel}
+                </button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        updateNotificationDots();
+      }
+
+      // Render Reimbursement Expense Items & 1,000 HKD Cap Validation
+      function renderExpenseItems() {
+        const list = document.getElementById('expense-items-list');
+        if (state.expenseItems.length === 0) {
+          list.innerHTML = `
+            <div class="bg-white border border-[#E5E7EB] rounded-[16px] p-6 text-center text-[#6B7280] text-[16px]">
+              No expense items added yet. Click <strong>+ Add Expense Item</strong> above to begin.
+            </div>
+          `;
+        } else {
+          list.innerHTML = state.expenseItems.map((item, idx) => `
+            <article class="bg-white border border-[#E5E7EB] rounded-[16px] p-4 shadow-sm space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h3 class="text-[18px] font-bold text-[#1F2937]">${item.title}</h3>
+                  <span class="inline-block bg-[#F3F4F6] text-[#4B5563] text-[14px] font-medium px-2.5 py-0.5 rounded-[8px] mt-1">Category: ${item.category}</span>
+                </div>
+                <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">Verified</span>
+              </div>
+              <div class="flex items-center justify-between pt-2 border-t border-[#E5E7EB]">
+                <button type="button" data-remove-exp="${idx}" class="btn-remove-exp text-[#9E1B32] font-semibold text-[16px] hover:underline focus-ring">
+                  &#128465; Remove
+                </button>
+                <div class="text-right">
+                  <p class="text-[14px] text-[#6B7280]">Claim Amount</p>
+                  <p class="text-[18px] font-bold text-[#1F2937]">HK$ ${item.amount.toFixed(2)}</p>
+                </div>
+              </div>
+            </article>
+          `).join('');
+        }
+
+        const total = state.expenseItems.reduce((sum, i) => sum + i.amount, 0);
+        const totalEl = document.getElementById('subsidy-total-amount');
+        const msgEl = document.getElementById('subsidy-allowance-msg');
+        const nextBtn = document.getElementById('btn-reimburse-step2-next');
+
+        totalEl.textContent = `HK$ ${total.toLocaleString('en-US', { minimumFractionDigits: total > 0 ? 2 : 0, maximumFractionDigits: 2 })}`;
+
+        if (total > 1000) {
+          totalEl.classList.remove('text-[#1F2937]');
+          totalEl.classList.add('text-[#9E1B32]');
+          msgEl.className = 'text-[16px] text-[#9E1B32] font-semibold flex items-start justify-end gap-1.5 text-right';
+          msgEl.innerHTML = '<span>&#9888;&#65039; Exceeds maximum limit of HK$ 1,000.00 per single application. Please reduce items.</span>';
+          nextBtn.classList.add('opacity-60');
+        } else {
+          totalEl.classList.remove('text-[#9E1B32]');
+          totalEl.classList.add('text-[#1F2937]');
+          msgEl.className = 'text-[16px] text-[#137333] font-medium flex items-center justify-end gap-1.5';
+          msgEl.innerHTML = '<span>&#10003;</span><span>Within 100% of Allowable Category Allowance (Max HK$ 1,000.00)</span>';
+          nextBtn.classList.remove('opacity-60');
+        }
+      }
+
+      // Render Presentation Boards in Entry Step 3
+      function renderBoards() {
+        const list = document.getElementById('entry-boards-list');
+        list.innerHTML = state.boards.map((b, i) => `
+          <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-[12px] px-3.5 py-2.5 flex items-center justify-between">
+            <span class="text-[16px] font-medium text-[#1F2937]">${b}</span>
+            <span class="bg-[#E6F4EA] text-[#137333] text-[14px] font-semibold px-2.5 py-0.5 rounded-full">&#10003; Blind-Check OK</span>
+          </div>
+        `).join('');
+      }
+
+      // Global Click Delegation
+      document.addEventListener('click', (e) => {
+        // Navigation Triggers
+        const navBtn = e.target.closest('[data-nav]');
+        if (navBtn) {
+          const targetScreen = navBtn.getAttribute('data-nav');
+          navigateTo(targetScreen);
+          document.getElementById('nav-drawer-backdrop').classList.add('hidden');
+          return;
+        }
+
+        // Workspace Filter Tabs
+        const wsTab = e.target.closest('.ws-tab');
+        if (wsTab) {
+          state.activeFilter = wsTab.getAttribute('data-filter');
+          renderWorkspace();
+          return;
+        }
+
+        // Workspace Card Action Buttons (Track A: Apply refund | Track B: Upload Receipt | View Dossier)
+        const appActionBtn = e.target.closest('.ws-app-action');
+        if (appActionBtn) {
+          const appId = appActionBtn.getAttribute('data-app-id');
+          const action = appActionBtn.getAttribute('data-action');
+          state.activeTriggerAppId = appId;
+
+          if (action === 'refund') {
+            state.expenseItems = [];
+            renderExpenseItems();
+            navigateTo('screen-reimburse-step1');
+          } else if (action === 'receipt') {
+            navigateTo('screen-receipt-upload');
+          } else {
+            navigateTo('screen-user-profile');
+          }
+          return;
+        }
+
+        // Favorite Star Toggles
+        const favStar = e.target.closest('.btn-fav-star');
+        if (favStar) {
+          const id = favStar.getAttribute('data-fav-id');
+          if (state.favorites.has(id)) {
+            state.favorites.delete(id);
+            favStar.classList.remove('text-[#9E1B32]');
+            favStar.classList.add('text-[#D1D5DB]');
+            showToast('Removed from Favorites', 'info');
+          } else {
+            state.favorites.add(id);
+            favStar.classList.remove('text-[#D1D5DB]');
+            favStar.classList.add('text-[#9E1B32]');
+            showToast('Saved to Favorites!');
+          }
+          return;
+        }
+
+        // Remove Expense Item
+        const remBtn = e.target.closest('.btn-remove-exp');
+        if (remBtn) {
+          const idx = Number(remBtn.getAttribute('data-remove-exp'));
+          state.expenseItems.splice(idx, 1);
+          renderExpenseItems();
+          return;
+        }
+
+        // Quick-Fill Expense Chip
+        const chip = e.target.closest('.quick-expense-chip');
+        if (chip) {
+          document.getElementById('exp-title').value = chip.getAttribute('data-title');
+          document.getElementById('exp-cat').value = chip.getAttribute('data-cat');
+          document.getElementById('exp-amount').value = chip.getAttribute('data-amount');
+          return;
+        }
+
+        // Inspect Document Modal
+        const inspectBtn = e.target.closest('.btn-inspect-doc');
+        if (inspectBtn) {
+          const docName = inspectBtn.getAttribute('data-doc');
+          document.getElementById('modal-title').textContent = 'Document Verification Preview';
+          document.getElementById('modal-body').innerHTML = `
+            <p class="font-semibold text-[#1F2937]">${docName}</p>
+            <p>Checksum SHA-256 verified. Document passes PolyU School of Design &amp; Finance Office formatting requirements.</p>
+          `;
+          document.getElementById('global-modal').classList.remove('hidden');
+          return;
+        }
+
+        // Replace Document Feedback
+        if (e.target.closest('.btn-replace-doc')) {
+          showToast('Document replacement uploaded & verified!');
+        }
+      });
+
+      // Drawer Controls
+      document.getElementById('btn-open-drawer').addEventListener('click', () => {
+        document.getElementById('nav-drawer-backdrop').classList.remove('hidden');
+      });
+      document.getElementById('btn-close-drawer').addEventListener('click', () => {
+        document.getElementById('nav-drawer-backdrop').classList.add('hidden');
+      });
+      document.getElementById('nav-drawer-backdrop').addEventListener('click', (e) => {
+        if (e.target.id === 'nav-drawer-backdrop') {
+          e.target.classList.add('hidden');
+        }
+      });
+
+      // Language Toggle
+      document.getElementById('btn-lang-toggle').addEventListener('click', () => {
+        state.lang = state.lang === 'ENG' ? '繁中' : 'ENG';
+        const eng = document.getElementById('lang-eng');
+        const zh = document.getElementById('lang-zh');
+        eng.className = state.lang === 'ENG' ? 'text-[#9E1B32]' : 'text-[#6B7280]';
+        zh.className = state.lang === '繁中' ? 'text-[#9E1B32]' : 'text-[#6B7280]';
+        showToast(`Language switched to ${state.lang}`, 'info');
+      });
+
+      // Modal Controls
+      const closeModal = () => document.getElementById('global-modal').classList.add('hidden');
+      document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+      document.getElementById('btn-modal-ok').addEventListener('click', closeModal);
+      document.getElementById('btn-open-brief-modal').addEventListener('click', () => {
+        document.getElementById('modal-title').textContent = 'Red Dot 2026 Contest Brief';
+        document.getElementById('modal-body').innerHTML = `
+          <p><strong>Competition:</strong> Red Dot Award: Design Concept 2026</p>
+          <p><strong>Blind Jury Policy:</strong> Zero student/institution identifiers allowed on boards or video metadata.</p>
+          <p><strong>PolyU Subsidy Cap:</strong> Up to HK$ 1,000.00 per single reimbursement application.</p>
+        `;
+        document.getElementById('global-modal').classList.remove('hidden');
+      });
+
+      // Contest Detail Favorite Button
+      document.getElementById('btn-detail-fav').addEventListener('click', (e) => {
+        const isSaved = state.favorites.has('red-dot-2026');
+        if (isSaved) {
+          state.favorites.delete('red-dot-2026');
+          e.target.textContent = 'Save to Favorites';
+          showToast('Removed from Favorites', 'info');
+        } else {
+          state.favorites.add('red-dot-2026');
+          e.target.textContent = 'Saved in Favorites ✓';
+          showToast('Saved Red Dot 2026 to Favorites!');
+        }
+      });
+
+      // Entry Step 1: Character Counters & Switch Project
+      const detailsInput = document.getElementById('entry-details-input');
+      const conceptInput = document.getElementById('entry-concept-input');
+      detailsInput.addEventListener('input', () => {
+        document.getElementById('entry-details-count').textContent = `${detailsInput.value.length} / 500 characters`;
+      });
+      conceptInput.addEventListener('input', () => {
+        document.getElementById('entry-concept-count').textContent = `${conceptInput.value.length} / 2,000 characters`;
+      });
+      document.getElementById('btn-switch-project').addEventListener('click', () => {
+        const titleEl = document.getElementById('entry-project-title');
+        titleEl.textContent = titleEl.textContent.includes('NeuroHaptic')
+          ? 'BioLoop Circular Packaging'
+          : 'NeuroHaptic VR Pavilion';
+        showToast(`Switched project to ${titleEl.textContent}`, 'info');
+      });
+
+      // Entry Step 2: Ethics Validation
+      document.getElementById('btn-entry-step2-next').addEventListener('click', () => {
+        const c1 = document.getElementById('entry-ethics-1').checked;
+        const c2 = document.getElementById('entry-ethics-2').checked;
+        if (!c1 || !c2) {
+          showToast('Please accept both ethics declarations to continue.', 'error');
+          return;
+        }
+        navigateTo('screen-entry-step3');
+      });
+
+      // Entry Step 3: Add Board + Submit Entry
+      document.getElementById('btn-add-board').addEventListener('click', () => {
+        if (state.boards.length >= 5) {
+          showToast('Maximum 5 presentation boards allowed.', 'error');
+          return;
+        }
+        state.boards.push(`Board_0${state.boards.length + 1}_BlindJury.pdf`);
+        renderBoards();
+        showToast('Presentation board uploaded!');
+      });
+
+      document.getElementById('btn-submit-entry').addEventListener('click', () => {
+        const newApp = {
+          id: 'app-rd-' + Date.now(),
+          category: 'XR HARDWARE & ERGONOMICS',
+          title: 'Red Dot Award: Design Concept 2026',
+          ref: 'Ref: #RD-2026 • Singapore & Essen',
+          endorsement: '✓ Prof. Keith Lam',
+          deadline: 'Mar 15, 2026',
+          status: 'action',
+          statusLabel: '• Action',
+          actionType: 'refund',
+          actionLabel: 'Apply refund'
+        };
+        state.applications.unshift(newApp);
+        state.activeFilter = 'all';
+        renderWorkspace();
+        showToast('Competition Entry Submitted! You are now eligible to apply for subsidy reimbursement.');
+        navigateTo('screen-user-workspace');
+      });
+
+      // Reimbursement Step 2: Inline Form & 1,000 HKD Cap
+      document.getElementById('btn-toggle-expense-form').addEventListener('click', () => {
+        document.getElementById('expense-inline-form').classList.toggle('hidden');
+      });
+      document.getElementById('btn-close-expense-form').addEventListener('click', () => {
+        document.getElementById('expense-inline-form').classList.add('hidden');
+      });
+      document.getElementById('btn-save-expense-item').addEventListener('click', () => {
+        const title = document.getElementById('exp-title').value.trim();
+        const category = document.getElementById('exp-cat').value;
+        const amount = parseFloat(document.getElementById('exp-amount').value);
+        if (!title || isNaN(amount) || amount <= 0) {
+          showToast('Please enter a valid item title and HK$ amount.', 'error');
+          return;
+        }
+        state.expenseItems.push({ title, category, amount });
+        document.getElementById('exp-title').value = '';
+        document.getElementById('exp-amount').value = '';
+        document.getElementById('expense-inline-form').classList.add('hidden');
+        renderExpenseItems();
+      });
+
+      document.getElementById('btn-reimburse-step2-next').addEventListener('click', () => {
+        const total = state.expenseItems.reduce((sum, i) => sum + i.amount, 0);
+        if (total === 0) {
+          showToast('Please add at least one expense item.', 'error');
+          return;
+        }
+        if (total > 1000) {
+          showToast('Total exceeds HK$ 1,000.00 cap! Please remove or reduce items.', 'error');
+          return;
+        }
+        navigateTo('screen-reimburse-step3');
+      });
+
+      // Reimbursement Step 3: Submit & Update Triggering Card
+      document.getElementById('btn-submit-reimburse').addEventListener('click', () => {
+        if (!document.getElementById('reimburse-certify-chk').checked) {
+          showToast('Please check the certification statement before submitting.', 'error');
+          return;
+        }
+        if (state.activeTriggerAppId) {
+          const app = state.applications.find(a => a.id === state.activeTriggerAppId);
+          if (app) {
+            app.status = 'in-review';
+            app.statusLabel = '• IN REVIEW';
+            app.actionType = 'view';
+            app.actionLabel = 'View Dossier';
+          }
+          state.activeTriggerAppId = null;
+        }
+        renderWorkspace();
+        showToast('Reimbursement Application Submitted! Status updated to In Review.');
+        navigateTo('screen-user-workspace');
+      });
+
+      // Receipt Upload Screen: Attach & Submit
+      document.getElementById('btn-upload-supp-receipt').addEventListener('click', () => {
+        document.getElementById('supp-receipt-status').classList.remove('hidden');
+        showToast('Supplementary receipt attached!');
+      });
+
+      document.getElementById('btn-submit-receipts').addEventListener('click', () => {
+        const app = state.applications.find(a => a.id === (state.activeTriggerAppId || 'app-mit-2025'));
+        if (app) {
+          app.status = 'in-review';
+          app.statusLabel = '• IN REVIEW';
+          app.actionType = 'view';
+          app.actionLabel = 'View Dossier';
+        }
+        state.activeTriggerAppId = null;
+        renderWorkspace();
+        showToast('Receipts uploaded successfully for audit!');
+        navigateTo('screen-user-workspace');
+      });
+
+      // User Edit Form Submission
+      document.getElementById('user-edit-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const first = document.getElementById('edit-first-name').value.trim();
+        const last = document.getElementById('edit-last-name').value.trim();
+        const display = document.getElementById('edit-display-name').value.trim() || `${first} ${last}`;
+        const phone = document.getElementById('edit-phone').value.trim();
+
+        document.getElementById('workspace-user-name').textContent = display;
+        document.getElementById('profile-user-name').textContent = display;
+        document.getElementById('prof-full-name').textContent = `${first} ${last}`;
+        document.getElementById('prof-pref-name').textContent = `${display} (she/her)`;
+        document.getElementById('prof-phone').textContent = `+852 (HK) ${phone}`;
+        document.getElementById('header-avatar-initials').textContent = `${first[0] || 'E'}${last[0] || 'V'}`.toUpperCase();
+
+        showToast('Profile verification updated!');
+        navigateTo('screen-user-profile');
+      });
+
+      // Save Draft Buttons
+      ['btn-entry-save-draft-1', 'btn-entry-save-draft-2', 'btn-entry-save-draft-3',
+       'btn-reimburse-draft-1', 'btn-reimburse-draft-2', 'btn-reimburse-draft-3',
+       'btn-receipt-draft', 'btn-edit-save-draft'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', () => showToast('Draft saved locally.', 'info'));
+      });
+
+      // Load More Competitions Feedback
+      document.getElementById('btn-load-more-comp').addEventListener('click', () => {
+        showToast('Loaded additional eligible competitions.', 'info');
+      });
+
+      // Initialize App
+      renderWorkspace();
+      renderExpenseItems();
+    })();
+  </script>
+</body>
+</html>
